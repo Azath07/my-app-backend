@@ -22,7 +22,8 @@ jobs:
         run: |
           npm install
           npm run build --if-present
-          
+          if [ "$(npm run | grep -w test)" ]; then npm run test; else echo "No test specified"; fi
+
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
 
@@ -53,9 +54,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F4DBDBE8FE6D405BBD5173594D6DDF57 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_EF1936990C7443C6A3170C63AB12D410 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_0712D3C16D0842498049653758A0270A }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
